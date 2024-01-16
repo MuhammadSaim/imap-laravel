@@ -5,7 +5,7 @@ import MailboxSidebar from "@/Components/Mailbox/MailboxSidebar.jsx";
 import MailboxContact from "@/Components/Mailbox/MailboxContact.jsx";
 import MailboxMessageDetail from "@/Components/Mailbox/MailboxMessageDetail.jsx";
 
-const Inbox = ({ auth }) => {
+const Inbox = ({ auth, folders}) => {
 
     return (
         <Authenticated
@@ -14,7 +14,7 @@ const Inbox = ({ auth }) => {
         >
             <Head title="Inbox"/>
             <div className="flex w-full h-full shadow-lg">
-                <MailboxSidebar/>
+                <MailboxSidebar folders={folders}/>
                 <MailboxContact/>
                 <MailboxMessageDetail/>
             </div>

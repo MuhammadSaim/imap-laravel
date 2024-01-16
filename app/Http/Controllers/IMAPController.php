@@ -12,7 +12,10 @@ class IMAPController extends Controller
 
     public function show(Request $request, IMAPMailService $IMAPMailService): InertiaResponse
     {
-        return Inertia::render('Mailbox/Inbox');
+        $folders = $IMAPMailService->get_serialized_folders();
+        return Inertia::render('Mailbox/Inbox', [
+            'folders' => $folders
+        ]);
     }
 
 }

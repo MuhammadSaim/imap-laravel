@@ -66,18 +66,14 @@ class User extends Authenticatable
     public function getIMAPFormattedSettings(): array
     {
         return [
-            'accounts' => [
-                'default' => [
-                    'host'  => $this->settings->imap_host,
-                    'port'  => $this->settings->imap_port ?? 993,
-                    'protocol'  => $this->settings->imap_protocol ?? 'imap', //might also use imap, [pop3 or nntp (untested)]
-                    'encryption'    => $this->settings->imap_encryption ?? 'tls', // Supported: false, 'ssl', 'tls', 'notls', 'starttls'
-                    'validate_cert' => $this->settings->imap_validate_cert,
-                    'username' => $this->settings->imap_username,
-                    'password' => $this->settings->imap_password,
-                    'authentication' => $this->settings->imap_authentication ?? null,
-                ]
-            ]
+            'host' => $this->settings->imap_host,
+            'port' => $this->settings->imap_port ?? 993,
+            'protocol' => $this->settings->imap_protocol ?? 'imap', //might also use imap, [pop3 or nntp (untested)]
+            'encryption' => $this->settings->imap_encryption ?? 'tls', // Supported: false, 'ssl', 'tls', 'notls', 'starttls'
+            'validate_cert' => $this->settings->imap_validate_cert,
+            'username' => $this->settings->imap_username,
+            'password' => $this->settings->imap_password,
+            'authentication' => $this->settings->imap_authentication ?? null,
         ];
     }
 
