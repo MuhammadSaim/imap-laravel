@@ -24,6 +24,9 @@ export default function Authenticated({ user, header, children }) {
                                 <NavLink href={route('dashboard')} active={route().current('dashboard')}>
                                     Dashboard
                                 </NavLink>
+                                <NavLink href={route('imap.mailbox')} active={route().current('imap.mailbox')}>
+                                    Mail Inbox
+                                </NavLink>
                             </div>
                         </div>
 

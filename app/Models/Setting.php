@@ -12,7 +12,8 @@ class Setting extends Model
     protected $guarded = [];
 
     protected $casts = [
-      'imap_validate_cert' => 'boolean'
+      'imap_validate_cert' => 'boolean',
+      'imap_port' => 'int',
     ];
 
 
