@@ -1,3 +1,5 @@
+import {HashLoader} from "react-spinners";
+
 export default function PrimaryButton({ className = '', disabled, children, ...props }) {
     return (
         <button

@@ -1,11 +1,38 @@
 import Authenticated from "@/Layouts/AuthenticatedLayout.jsx";
-import {Head, router, useForm, usePage} from "@inertiajs/react";
+import {Head, useForm, usePage} from "@inertiajs/react";
 import InputLabel from "@/Components/InputLabel.jsx";
 import TextInput from "@/Components/TextInput.jsx";
 import InputError from "@/Components/InputError.jsx";
 import SelectInput from "@/Components/SelectInput.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import {Transition} from "@headlessui/react";
+import Alert from "@/Components/Alert.jsx";
+import {HashLoader} from "react-spinners";
+
+
+const encryption_options = [
+    {
+        value: 'false',
+        text: 'Disable encryption',
+    },
+    {
+        value: 'ssl',
+        text: 'Use SSL',
+    },
+    {
+        value: 'tls',
+        text: 'Use TLS',
+    },
+    {
+        value: 'starttls',
+        text: 'Use STARTTLS (alias TLS) (legacy only)',
+    },
+    {
+        value: 'notls',
+        text: 'Use NoTLS (legacy only)',
+    }
+];
+
 
 const Settings = ({ auth }) => {
 
@@ -35,13 +62,23 @@ const Settings = ({ auth }) => {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                     <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                         <section className="max-w-full">
-                            <header>
+                            <header className="mb-3">
                                 <h2 className="text-lg font-medium text-gray-900">IMAP Settings</h2>
 
                                 <p className="mt-1 text-sm text-gray-600">
                                     Update your account's IMAP information to integrate email.
                                 </p>
                             </header>
+
+                            <Transition
+                                show={recentlySuccessful}
+                                enter="transition ease-in-out"
+                                enterFrom="opacity-0"
+                                leave="transition ease-in-out"
+                                leaveTo="opacity-0"
+                            >
+                                <Alert message="Setting is saved successfully." />
+                            </Transition>
 
                             <form onSubmit={submit} className="mt-6 space-y-6">
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -76,33 +113,12 @@ const Settings = ({ auth }) => {
                                         <SelectInput
                                             id="imap_encryption"
                                             className="mt-1 block w-full"
-                                            value={data.imap_encryption ?? ''}
+                                            defaultValue={data.imap_encryption}
                                             onChange={(e) => setData('imap_encryption', e.target.value)}
                                             required
                                             disabled={processing}
                                             autoComplete="imap_encryption"
-                                            options={[
-                                                {
-                                                    value: 'false',
-                                                    text: 'Disable encryption',
-                                                },
-                                                {
-                                                    value: 'ssl',
-                                                    text: 'Use SSL',
-                                                },
-                                                {
-                                                    value: 'tls',
-                                                    text: 'Use TLS',
-                                                },
-                                                {
-                                                    value: 'starttls',
-                                                    text: 'Use STARTTLS (alias TLS) (legacy only)',
-                                                },
-                                                {
-                                                    value: 'notls',
-                                                    text: 'Use NoTLS (legacy only)',
-                                                }
-                                            ]}
+                                            options={encryption_options}
                                         />
                                         <InputError className="mt-2" message={errors.imap_encryption}/>
                                     </div>
@@ -137,17 +153,17 @@ const Settings = ({ auth }) => {
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-4">
-                                    <PrimaryButton disabled={processing}>Save</PrimaryButton>
-
-                                    <Transition
-                                        show={recentlySuccessful}
-                                        enter="transition ease-in-out"
-                                        enterFrom="opacity-0"
-                                        leave="transition ease-in-out"
-                                        leaveTo="opacity-0"
-                                    >
-                                        <p className="text-sm text-gray-600">Saved.</p>
-                                    </Transition>
+                                    <PrimaryButton disabled={processing}>
+                                        {
+                                            processing ?
+                                                <HashLoader
+                                                    color='#fff'
+                                                    size={20}
+                                                />
+                                                :
+                                            'Save'
+                                        }
+                                    </PrimaryButton>
                                 </div>
                             </form>
 
