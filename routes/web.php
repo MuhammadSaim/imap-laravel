@@ -37,7 +37,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // IMAP settings
-    Route::get('/mail/inbox', [IMAPController::class, 'show'])->name('imap.mailbox');
+    Route::get('/mailbox', [IMAPController::class, 'mailbox'])->name('imap.mailbox');
+    Route::get('/mailbox/{folder}', [IMAPController::class, 'open_folder'])->name('imap.mailbox.open.folder');
 
     // settings
     Route::match(['GET', 'POST'], '/settings', [SettingsController::class, 'save'])->name('profile.settings');

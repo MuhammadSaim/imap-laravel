@@ -10,13 +10,16 @@ use Webklex\PHPIMAP\ClientManager;
 use Webklex\PHPIMAP\Exceptions\AuthFailedException;
 use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
 use Webklex\PHPIMAP\Exceptions\FolderFetchingException;
+use Webklex\PHPIMAP\Exceptions\GetMessagesFailedException;
 use Webklex\PHPIMAP\Exceptions\ImapBadRequestException;
 use Webklex\PHPIMAP\Exceptions\ImapServerErrorException;
 use Webklex\PHPIMAP\Exceptions\MaskNotFoundException;
 use Webklex\PHPIMAP\Exceptions\ResponseException;
 use Webklex\PHPIMAP\Exceptions\RuntimeException;
 use Webklex\PHPIMAP\Folder;
+use Webklex\PHPIMAP\Query\WhereQuery;
 use Webklex\PHPIMAP\Support\FolderCollection;
+use Webklex\PHPIMAP\Support\MessageCollection;
 
 class IMAPMailService
 {
@@ -137,6 +140,46 @@ class IMAPMailService
             }
         }
         return $folders;
+    }
+
+
+    /**
+     *
+     * get the folder by the name
+     *
+     * @param string $name
+     * @return Folder
+     * @throws AuthFailedException
+     * @throws ConnectionFailedException
+     * @throws FolderFetchingException
+     * @throws ImapBadRequestException
+     * @throws ImapServerErrorException
+     * @throws ResponseException
+     * @throws RuntimeException
+     */
+    public function get_folder(string $name): Folder
+    {
+        return $this->imap_client->getFolderByName($name);
+    }
+
+
+    /**
+     *
+     * return the messages of the specific folder
+     *
+     * @param Folder $folder
+     * @return MessageCollection
+     * @throws AuthFailedException
+     * @throws ConnectionFailedException
+     * @throws ImapBadRequestException
+     * @throws ImapServerErrorException
+     * @throws ResponseException
+     * @throws RuntimeException
+     * @throws GetMessagesFailedException
+     */
+    public function get_messages(Folder $folder): MessageCollection
+    {
+        return $folder->messages()->all()->get();
     }
 
 
