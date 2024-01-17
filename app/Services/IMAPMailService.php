@@ -182,6 +182,35 @@ class IMAPMailService
         return $folder->messages()->all()->get();
     }
 
+    /**
+     *
+     * return the messages array
+     *
+     * @param Folder $folder
+     * @return Collection
+     */
+    public function get_serialize_messages(Folder $folder): Collection
+    {
+        $messages = collect();
+        $messages_obj = $this->get_messages($folder);
+        foreach ($messages_obj as $item){
+            $messages->push([
+                'id'  => $item->getUid(),
+                'name' => $item->getFrom()->toArray(),
+                'email' => $item->getFrom()->toArray(),
+                'subject' => $item->getSubject()->toArray(),
+                'flag' => $item->getFlags()->toArray()
+            ]);
+        }
+        return $messages;
+    }
+
+
+    private function get_from_name(array $array): string
+    {
+        return '';
+    }
+
 
     /**
      *
