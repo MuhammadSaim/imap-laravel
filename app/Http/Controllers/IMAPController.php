@@ -68,6 +68,7 @@ class IMAPController extends Controller
         $folder = $IMAPMailService->get_folder($folder);
         $folders = $IMAPMailService->get_serialized_folders();
         $messages = $IMAPMailService->get_serialize_messages($folder);
+//        dd($messages);
         return Inertia::render('Mailbox/Inbox', [
             'folders' => $folders,
             'messages' => $messages

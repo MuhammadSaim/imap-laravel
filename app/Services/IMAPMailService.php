@@ -180,7 +180,7 @@ class IMAPMailService
      */
     public function get_messages(Folder $folder): MessageCollection
     {
-        return $folder->messages()->all()->get();
+        return $folder->query()->setFetchOrderAsc()->all()->get();
     }
 
     /**
@@ -199,6 +199,8 @@ class IMAPMailService
                 'id'  => $item->getUid(),
                 'name' => $this->get_value($item->getFrom(), 'personal'),
                 'email' => $this->get_value($item->getFrom(), 'mail'),
+                'full_date' => $item->getDate()->toArray()[0]->format('Y-m-d h:i A'),
+                'date_humans' => $item->getDate()->toArray()[0]->diffForHumans(),
                 'subject' => strlen($item->getSubject()->toArray()[0]) > 100 ? 'No Subject' : $item->getSubject()->toArray()[0],
                 'flag' => $item->getFlags()->toArray()
             ]);

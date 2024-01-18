@@ -25,7 +25,7 @@ const MailboxContact = ({messages}) => {
                         <li key={index} className={`py-5 border-b px-3 transition cursor-pointer ${isMessageSeen(message.flag) ? 'bg-indigo-600 text-white hover:bg-indigo-700' : 'hover:bg-indigo-100'}`}>
                             <a href="#" className="flex justify-between items-center">
                                 <h3 className="text-lg font-semibold">{message.name}</h3>
-                                <p className="text-md text-gray-400">23m ago</p>
+                                <p className="text-md text-gray-400">{message.date_humans}</p>
                             </a>
                             <div className="text-md italic text-gray-400">{message.subject}</div>
                         </li>
