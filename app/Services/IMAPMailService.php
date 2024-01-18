@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Webklex\PHPIMAP\Attribute;
 use Webklex\PHPIMAP\Client;
 use Webklex\PHPIMAP\ClientManager;
 use Webklex\PHPIMAP\Exceptions\AuthFailedException;
@@ -196,9 +197,9 @@ class IMAPMailService
         foreach ($messages_obj as $item){
             $messages->push([
                 'id'  => $item->getUid(),
-                'name' => $item->getFrom()->toArray(),
-                'email' => $item->getFrom()->toArray(),
-                'subject' => $item->getSubject()->toArray(),
+                'name' => $this->get_value($item->getFrom(), 'personal'),
+                'email' => $this->get_value($item->getFrom(), 'mail'),
+                'subject' => strlen($item->getSubject()->toArray()[0]) > 100 ? 'No Subject' : $item->getSubject()->toArray()[0],
                 'flag' => $item->getFlags()->toArray()
             ]);
         }
@@ -206,9 +207,11 @@ class IMAPMailService
     }
 
 
-    private function get_from_name(array $array): string
+    private function get_value(Attribute $attribute, string $key)
     {
-        return '';
+        $address = (array)$attribute->first();
+        $address = $address[$key];
+        return $address;
     }
 
 
