@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Setting;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
@@ -30,12 +31,9 @@ class SettingsController extends Controller
             ]);
             auth()->user()->settings()->update($data);
         }
-        $imap_settings = auth()->user()->settings;
+        $imap_settings = User::where('id', auth()->id())->first()->getIMAPFormattedSettings();
         return Inertia::render('Settings', [
-            'imap_settings' => [
-                'imap_host' => $imap_settings->imap_host,
-                'imap_port' => $imap_settings->imap_port,
-            ]
+            'imap_settings' => $imap_settings
         ]);
     }
 

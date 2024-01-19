@@ -37,12 +37,14 @@ const Settings = ({ auth }) => {
 
     const imap_settings = usePage().props.imap_settings;
 
+    console.log(imap_settings);
+
     const { data, setData, post, errors, processing, recentlySuccessful } = useForm({
-        imap_host: imap_settings.imap_host,
-        imap_port: imap_settings.imap_port,
-        imap_encryption: imap_settings.imap_encryption,
-        imap_username: imap_settings.imap_username,
-        imap_password: imap_settings.imap_password,
+        imap_host: imap_settings.host,
+        imap_port: imap_settings.port,
+        imap_encryption: imap_settings.encryption,
+        imap_username: imap_settings.username,
+        imap_password: imap_settings.password,
     });
 
     const submit = (e) => {
