@@ -1,6 +1,6 @@
 import {HashLoader} from "react-spinners";
 
-export default function PrimaryButton({ className = '', disabled, children, ...props }) {
+export default function PrimaryButton({ className = '', loading = false, disabled, children, ...props }) {
     return (
         <button
             {...props}
@@ -11,7 +11,16 @@ export default function PrimaryButton({ className = '', disabled, children, ...p
             }
             disabled={disabled}
         >
-            {children}
+            {
+                loading
+                ?
+                    <HashLoader
+                        color='#fff'
+                        size={20}
+                    />
+                    :
+                    children
+            }
         </button>
     );
 }

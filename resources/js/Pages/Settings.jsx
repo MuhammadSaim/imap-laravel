@@ -7,7 +7,6 @@ import SelectInput from "@/Components/SelectInput.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import {Transition} from "@headlessui/react";
 import Alert from "@/Components/Alert.jsx";
-import {HashLoader} from "react-spinners";
 
 
 const encryption_options = [
@@ -153,20 +152,11 @@ const Settings = ({ auth }) => {
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-4">
-                                    <PrimaryButton disabled={processing}>
-                                        {
-                                            processing ?
-                                                <HashLoader
-                                                    color='#fff'
-                                                    size={20}
-                                                />
-                                                :
-                                            'Save'
-                                        }
+                                    <PrimaryButton disabled={processing} loading={processing}>
+                                        Save
                                     </PrimaryButton>
                                 </div>
                             </form>
-
                         </section>
                     </div>
                 </div>
