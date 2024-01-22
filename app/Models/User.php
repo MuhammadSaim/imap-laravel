@@ -48,37 +48,15 @@ class User extends Authenticatable
 
     /**
      *
-     * make relation with setting to fetch the settings values
+     * make relation with accounts which user's added
      *
      * @return HasOne
      */
-    public function settings(): HasOne
+    public function accounts(): HasOne
     {
-        return $this->hasOne(Setting::class);
+        return $this->hasOne(EmailAccount::class);
     }
 
-
-    /**
-     *
-     * relationship with folders
-     *
-     * @return HasMany
-     */
-    public function folders(): HasMany
-    {
-        return $this->hasMany(Folder::class);
-    }
-
-    /**
-     *
-     * relation with all the message
-     *
-     * @return HasMany
-     */
-    public function messages(): HasMany
-    {
-        return $this->hasMany(EmailMessage::class);
-    }
 
 
     /**

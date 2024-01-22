@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('folders', function (Blueprint $table) {
+        Schema::table('email_messages', function (Blueprint $table) {
             $table->foreignId('email_account_id')
-                ->after('user_id')
+                ->after('id')
                 ->references('id')
-                ->on('email_accounts')
+                ->on('users')
                 ->onDelete('CASCADE')
                 ->onUpdate('CASCADE');
+            $table->dropForeign(['user_id']);
+            $table->dropColumn(['user_id']);
         });
     }
 
@@ -26,9 +28,15 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('folders', function (Blueprint $table) {
+        Schema::table('email_messages', function (Blueprint $table) {
             $table->dropForeign(['email_account_id']);
             $table->dropColumn(['email_account_id']);
+            $table->foreignId('user_id')
+                ->after('id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('CASCADE')
+                ->onUpdate('CASCADE');
         });
     }
 };
