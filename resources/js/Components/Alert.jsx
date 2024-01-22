@@ -1,4 +1,5 @@
 import React from "react";
+import {FaCircleXmark} from "react-icons/fa6";
 
 const Alert = ({type='success', message = ''}) => {
 
@@ -16,6 +17,23 @@ const Alert = ({type='success', message = ''}) => {
                     </div>
                     <div className="ml-3">
                         <p className="text-sm font-medium text-green-800">{ message ? message : 'Operation is performed successfully.' }</p>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    if(type === 'error'){
+        return (
+            <div className="border-l-4 border-red-400 bg-red-50 p-4">
+                <div className="flex">
+                    <div className="flex-shrink-0">
+                        <FaCircleXmark className="h-5 w-5 text-red-400" aria-hidden="true"/>
+                    </div>
+                    <div className="ml-3">
+                        <p className="text-sm text-red-700">
+                            {message}
+                        </p>
                     </div>
                 </div>
             </div>

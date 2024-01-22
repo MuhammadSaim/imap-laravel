@@ -41,7 +41,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/mailbox/{folder}', [IMAPController::class, 'open_folder'])->name('imap.mailbox.open.folder');
 
     // settings
-    Route::match(['GET', 'POST'], '/settings', [SettingsController::class, 'save'])->name('profile.settings');
+    Route::prefix('/settings')->name('settings.')->group(function (){
+        Route::match(['GET', 'POST'], '/accounts', [SettingsController::class, 'save'])->name('accounts');
+        Route::match(['GET', 'POST'], '/add-account', [SettingsController::class, 'account_add'])->name('account.add');
+    });
 });
 
 require __DIR__.'/auth.php';

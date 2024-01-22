@@ -31,10 +31,23 @@ class SettingsController extends Controller
             ]);
             auth()->user()->settings()->update($data);
         }
-        $imap_settings = User::where('id', auth()->id())->first()->getIMAPFormattedSettings();
+        $accounts = User::where('id', auth()->id())->with('accounts')->first();
         return Inertia::render('Settings', [
-            'imap_settings' => $imap_settings
+            'accounts' => $accounts
         ]);
+    }
+
+
+    /**
+     *
+     * add an account
+     *
+     * @param Request $request
+     * @return InertiaResponse
+     */
+    public function account_add(Request $request): InertiaResponse
+    {
+        return Inertia::render('Account');
     }
 
 
