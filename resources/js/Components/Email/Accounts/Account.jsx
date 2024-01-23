@@ -1,6 +1,7 @@
 import React from "react";
 import DangerButton from "@/Components/DangerButton.jsx";
 import {FaTrashAlt} from "react-icons/fa";
+import MarkAccountDefault from "@/Components/Email/Accounts/MarkAccountDefault.jsx";
 
 const Account = ({ account }) => {
     return (
@@ -10,15 +11,17 @@ const Account = ({ account }) => {
                     <h2 className="text-lg font-medium text-gray-900">{ account.name }</h2>
                     <div className="flex items-center">
                         {
-                            account.is_default &&
+                            account.is_default ?
                             <span className="inline-flex items-center gap-x-1.5 rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-700 mr-3">
                                 <svg className="h-1.5 w-1.5 fill-blue-500" viewBox="0 0 6 6" aria-hidden="true">
                                   <circle cx={3} cy={3} r={3}/>
                                 </svg>
                                 Default
                               </span>
+                                :
+                                <MarkAccountDefault account={account} />
                         }
-                        <DangerButton>
+                        <DangerButton className="ml-2">
                             <FaTrashAlt/>
                         </DangerButton>
                     </div>

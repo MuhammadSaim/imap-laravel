@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
+use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
 use Webklex\PHPIMAP\Exceptions\MaskNotFoundException;
 
 class SettingsController extends Controller
@@ -60,16 +61,21 @@ class SettingsController extends Controller
                 'password'      => $data['imap_password'],
                 'protocol'      => 'imap'
             ]);
-            $cm->connect();
-            if($cm->isConnected()){
-                if(auth()->user()->accounts()->count() <= 0){
-                    $data['is_default'] = true;
+            try{
+                $cm->connect();
+                if($cm->isConnected()){
+                    if(auth()->user()->accounts()->count() <= 0){
+                        $data['is_default'] = true;
+                    }
+                    auth()->user()->accounts()->create($data);
+                    return redirect()->route('settings.accounts')->with('success', 'Your email is connected successfully.');
+                }else{
+                    return redirect()->back()->with('error', 'Not able to connect to the email server.');
                 }
-                auth()->user()->accounts()->create($data);
-                return redirect()->route('settings.accounts')->with('success', 'Your email is connected successfully.');
-            }else{
+            }catch (ConnectionFailedException $e){
                 return redirect()->back()->with('error', 'Not able to connect to the email server.');
             }
+
         }
         return Inertia::render('Account');
     }
