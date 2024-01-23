@@ -10,6 +10,13 @@ class EmailAccount extends Model
 {
     use SoftDeletes;
 
+    protected $guarded = [];
+
+    protected $casts = [
+      'is_default' => 'boolean',
+      'imap_validate_cert' => 'boolean',
+    ];
+
     /**
      *
      * make a one-to-many relation with folders

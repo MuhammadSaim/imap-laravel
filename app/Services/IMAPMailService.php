@@ -50,8 +50,8 @@ class IMAPMailService
         if(Auth::check()){
             $this->user = User::whereEmail(\auth()->user()->email)->first();
             $this->imap_client_manager = new ClientManager();
-            $this->imap_client = $this->imap_client_manager->make($this->user->getIMAPFormattedSettings());
-            $this->imap_client->connect();
+//            $this->imap_client = $this->imap_client_manager->make($this->user->getIMAPFormattedSettings());
+//            $this->imap_client->connect();
         }
     }
 
@@ -226,6 +226,17 @@ class IMAPMailService
     public function getClient(): Client
     {
         return $this->imap_client;
+    }
+
+    /**
+     *
+     * simple method to return the IMAP client manager
+     *
+     * @return ClientManager
+     */
+    public function getClientManager(): ClientManager
+    {
+        return $this->imap_client_manager;
     }
 
 }

@@ -5,11 +5,14 @@ import IMAPAccountForm from "@/Components/Email/Accounts/IMAPAccountForm.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import {FaPlugCircleBolt} from "react-icons/fa6";
 import {FaPlusCircle} from "react-icons/fa";
+import AccountLists from "@/Components/Email/Accounts/AccountLists.jsx";
 
 
 const Settings = ({ auth }) => {
 
-    const accounts = usePage().props.accounts.accounts;
+    const accounts = usePage().props.accounts;
+
+    console.log(accounts);
 
     // const { data, setData, post, errors, processing, recentlySuccessful } = useForm({
     //     imap_host: imap_settings.host,
@@ -44,7 +47,7 @@ const Settings = ({ auth }) => {
                         accounts === null ?
                             <Alert message="Sorry there is no account connected yet." type="error" />
                             :
-                            <></>
+                            <AccountLists accounts={accounts} />
                     }
                 </div>
             </div>

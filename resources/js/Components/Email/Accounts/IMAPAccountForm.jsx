@@ -7,6 +7,7 @@ import InputError from "@/Components/InputError.jsx";
 import SelectInput from "@/Components/SelectInput.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import {useForm} from "@inertiajs/react";
+import {toast} from "react-toastify";
 
 
 const encryption_options = [
@@ -37,6 +38,7 @@ const IMAPAccountForm = () => {
 
 
     const { data, setData, post, errors, processing, recentlySuccessful } = useForm({
+        name: '',
         imap_host: '',
         imap_port: '',
         imap_encryption: '',
@@ -47,9 +49,7 @@ const IMAPAccountForm = () => {
     const submit = (e) => {
         e.preventDefault();
         post(route('settings.account.add'));
-
     }
-
 
     return (
         <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
@@ -58,21 +58,25 @@ const IMAPAccountForm = () => {
                     <h2 className="text-lg font-medium text-gray-900">IMAP Settings</h2>
 
                     <p className="mt-1 text-sm text-gray-600">
-                        Update your account's IMAP information to integrate email.
+                        Add account's IMAP information to integrate email.
                     </p>
                 </header>
-
-                <Transition
-                    show={recentlySuccessful}
-                    enter="transition ease-in-out"
-                    enterFrom="opacity-0"
-                    leave="transition ease-in-out"
-                    leaveTo="opacity-0"
-                >
-                    <Alert message="Setting is saved successfully."/>
-                </Transition>
-
                 <form onSubmit={submit} className="mt-6 space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
+                        <div>
+                            <InputLabel htmlFor="connection_name" value="Connection name"/>
+                            <TextInput
+                                id="connection_name"
+                                className="mt-1 block w-full"
+                                value={data.name}
+                                onChange={(e) => setData('name', e.target.value)}
+                                required
+                                disabled={processing}
+                                autoComplete="connection_name"
+                            />
+                            <InputError className="mt-2" message={errors.name}/>
+                        </div>
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
                             <InputLabel htmlFor="imap_host" value="IMAP Host"/>

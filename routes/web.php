@@ -42,7 +42,7 @@ Route::middleware('auth')->group(function () {
 
     // settings
     Route::prefix('/settings')->name('settings.')->group(function (){
-        Route::match(['GET', 'POST'], '/accounts', [SettingsController::class, 'save'])->name('accounts');
+        Route::match(['GET', 'POST'], '/accounts', [SettingsController::class, 'accounts'])->name('accounts');
         Route::match(['GET', 'POST'], '/add-account', [SettingsController::class, 'account_add'])->name('account.add');
     });
 });

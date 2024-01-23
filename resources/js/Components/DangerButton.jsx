@@ -1,4 +1,6 @@
-export default function DangerButton({ className = '', disabled, children, ...props }) {
+import {HashLoader} from "react-spinners";
+
+export default function DangerButton({ className = '', disabled, loading, children, ...props }) {
     return (
         <button
             {...props}
@@ -9,7 +11,15 @@ export default function DangerButton({ className = '', disabled, children, ...pr
             }
             disabled={disabled}
         >
-            {children}
+                { loading
+                ?
+                    <HashLoader
+                        color='#fff'
+                        size={20}
+                    />
+                :
+                    children
+                }
         </button>
     );
 }
