@@ -58,6 +58,11 @@ class User extends Authenticatable
     }
 
 
+    public function hasDefaultAccount(): bool
+    {
+        return $this->accounts()->where('is_default', true)->get()->count() >= 1;
+    }
+
 
     /**
      *
@@ -65,18 +70,22 @@ class User extends Authenticatable
      *
      * @return array
      */
-//    public function getIMAPFormattedSettings(): array
-//    {
-//        return [
-//            'host' => $this->settings->imap_host,
-//            'port' => $this->settings->imap_port ?? 993,
-//            'protocol' => $this->settings->imap_protocol ?? 'imap', //might also use imap, [pop3 or nntp (untested)]
-//            'encryption' => $this->settings->imap_encryption ?? 'tls', // Supported: false, 'ssl', 'tls', 'notls', 'starttls'
-//            'validate_cert' => $this->settings->imap_validate_cert,
-//            'username' => $this->settings->imap_username,
-//            'password' => $this->settings->imap_password,
-//            'authentication' => $this->settings->imap_authentication ?? null,
-//        ];
-//    }
+    public function getIMAPFormattedSettings(): array
+    {
+        if(!$this->hasDefaultAccount()){
+            return [];
+        }
+        $account = $this->accounts()->where('is_default', true)->first();
+        return [
+            'host' => $account->imap_host,
+            'port' => $account->imap_port ?? 993,
+            'protocol' => $account->imap_protocol ?? 'imap', //might also use imap, [pop3 or nntp (untested)]
+            'encryption' => $account->imap_encryption ?? 'tls', // Supported: false, 'ssl', 'tls', 'notls', 'starttls'
+            'validate_cert' => $account->imap_validate_cert,
+            'username' => $account->imap_username,
+            'password' => $account->imap_password,
+            'authentication' => $account->imap_authentication ?? null,
+        ];
+    }
 
 }

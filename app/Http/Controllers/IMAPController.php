@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Services\IMAPMailService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -23,6 +24,8 @@ class IMAPController extends Controller
     private Collection $folders;
     private array $first_folder;
     private IMAPMailService $IMAPMailService;
+    private $imap_client;
+
 
 
     /**
@@ -41,8 +44,10 @@ class IMAPController extends Controller
      */
     public function mailbox(IMAPMailService $IMAPMailService): RedirectResponse
     {
-        $this->IMAPMailService = $IMAPMailService;
-        $this->folders = $this->IMAPMailService->get_serialized_folders();
+        $user = User::where('id', auth()->id())->first();
+        $default_account = $user->getIMAPFormattedSettings();
+        $this->imap_client = $IMAPMailService->getClient($default_account)->connect();
+        $this->folders = $IMAPMailService->get_serialized_folders();
         $this->first_folder = $this->IMAPMailService->get_serialized_first_folder();
         return Redirect::route('imap.mailbox.open.folder', ['folder' => $this->first_folder['name']]);
     }

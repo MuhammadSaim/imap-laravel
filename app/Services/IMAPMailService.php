@@ -45,14 +45,38 @@ class IMAPMailService
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function __construct()
+
+    /**
+     *
+     * set the config array and return the client
+     *
+     * @param array $array
+     * @return $this
+     */
+    public function getClient(array $array): IMAPMailService
     {
-        if(Auth::check()){
-            $this->user = User::whereEmail(\auth()->user()->email)->first();
-            $this->imap_client_manager = new ClientManager();
-//            $this->imap_client = $this->imap_client_manager->make($this->user->getIMAPFormattedSettings());
-//            $this->imap_client->connect();
-        }
+        $this->imap_client_manager = new ClientManager();
+        $this->imap_client = $this->imap_client_manager->make($array);
+        return $this;
+    }
+
+
+    /**
+     *
+     * connect to the IMAP
+     *
+     * @return $this
+     * @throws AuthFailedException
+     * @throws ConnectionFailedException
+     * @throws ImapBadRequestException
+     * @throws ImapServerErrorException
+     * @throws ResponseException
+     * @throws RuntimeException
+     */
+    public function connect(): IMAPMailService
+    {
+        $this->imap_client->connect();
+        return $this;
     }
 
 
@@ -216,17 +240,6 @@ class IMAPMailService
         return $address;
     }
 
-
-    /**
-     *
-     * simple method to return the IMAP client
-     *
-     * @return Client
-     */
-    public function getClient(): Client
-    {
-        return $this->imap_client;
-    }
 
     /**
      *
