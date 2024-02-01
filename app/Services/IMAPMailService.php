@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Webklex\PHPIMAP\Attribute;
@@ -51,13 +52,16 @@ class IMAPMailService
      * set the config array and return the client
      *
      * @param array $array
-     * @return $this
+     * @return Client
+     * @throws MaskNotFoundException
      */
-    public function getClient(array $array): IMAPMailService
+    public function getClient(array $array = []): Client
     {
-        $this->imap_client_manager = new ClientManager();
-        $this->imap_client = $this->imap_client_manager->make($array);
-        return $this;
+        if(count($array) > 0){
+            $this->imap_client_manager = new ClientManager();
+            $this->imap_client = $this->imap_client_manager->make($array);
+        }
+        return $this->imap_client;
     }
 
 
@@ -209,6 +213,29 @@ class IMAPMailService
 
     /**
      *
+     * get message pagination's
+     *
+     * @param Folder $folder
+     * @param int $per_page
+     * @param int $page
+     * @param string $page_name
+     * @return LengthAwarePaginator
+     * @throws AuthFailedException
+     * @throws ConnectionFailedException
+     * @throws GetMessagesFailedException
+     * @throws ImapBadRequestException
+     * @throws ImapServerErrorException
+     * @throws ResponseException
+     * @throws RuntimeException
+     */
+    public function get_paginate_messages(Folder $folder, int $per_page = 10, int $page = 1, string $page_name = 'imap_page'): LengthAwarePaginator
+    {
+        return $folder->query()->all()->paginate($per_page, $page, $page_name);
+    }
+
+
+    /**
+     *
      * return the messages array
      *
      * @param Folder $folder
@@ -225,7 +252,12 @@ class IMAPMailService
                 'email' => $this->get_value($item->getFrom(), 'mail'),
                 'full_date' => $item->getDate()->toArray()[0]->format('Y-m-d h:i A'),
                 'date_humans' => $item->getDate()->toArray()[0]->diffForHumans(),
-                'subject' => strlen($item->getSubject()->toArray()[0]) > 100 ? 'No Subject' : $item->getSubject()->toArray()[0],
+                'subject' => function() use ($item): string {
+                    if(count($item->getSubject()->toArray()) <= 0){
+                        return 'No Subject';
+                    }
+                    return strlen($item->getSubject()->toArray()[0]) > 100 ? 'No Subject' : $item->getSubject()->toArray()[0];
+                },
                 'flag' => $item->getFlags()->toArray()
             ]);
         }
